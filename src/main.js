@@ -1,7 +1,7 @@
 "use strict";
 
 const CARD_NUMBER = 5;
-const CARD_NUMBER_EXTRA = 2;
+const CARD_NUMBER_RATE = 2;
 const CARD_NUMBER_COMMENT = 2;
 
 const createUserRank = () => {
@@ -159,15 +159,15 @@ const containerForMostCommntedMovies = filmsListExtra[1].querySelector(`.films-l
 
 for (let i = 0; i < CARD_NUMBER; i++) {
   render(containerForAllMovies, createCardForAllMoviesTemplate(), `beforeend`);
-};
+}
 
-for (let j = 0; j < CARD_NUMBER_EXTRA; j++) {
+for (let j = 0; j < CARD_NUMBER_RATE; j++) {
   render(containerForTopRatedMovies, createCardForTopRatedTemplate(), `beforeend`);
-};
+}
 
-for (let k = 0; k < CARD_NUMBER_EXTRA; k++) {
+for (let k = 0; k < CARD_NUMBER_COMMENT; k++) {
   render(containerForMostCommntedMovies, createCardForMostCommentedTemplate(), `beforeend`);
-};
+}
 
 render(filmList, createButtonTemplate(), `beforeend`);
 
