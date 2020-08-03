@@ -1,10 +1,9 @@
 "use strict";
 
-const CARD_NUMBER = 5;
-const CARD_NUMBER_RATE = 2;
-const CARD_NUMBER_COMMENT = 2;
+const NUMBER_OF_FILMS = 5;
+const NUMBER_OF_EXTRA_FILMS = 2;
 
-const createUserRank = () => {
+const createUserRankTemplate = () => {
   return (
     `<section class="header__profile profile">
     <p class="profile__rating">Movie Buff</p>
@@ -23,13 +22,8 @@ const createSiteMenuTemplate = () => {
       <a href="#favorites" class="main-navigation__item">Favorites <span class="main-navigation__item-count">8</span></a>
     </div>
     <a href="#stats" class="main-navigation__additional">Stats</a>
-  </nav>`
-  );
-};
-
-const createSortTemplate = () => {
-  return (
-    `<ul class="sort">
+  </nav>
+  <ul class="sort">
     <li><a href="#" class="sort__button sort__button--active">Sort by default</a></li>
     <li><a href="#" class="sort__button">Sort by date</a></li>
     <li><a href="#" class="sort__button">Sort by rating</a></li>
@@ -37,7 +31,7 @@ const createSortTemplate = () => {
   );
 };
 
-const createContainerForFilms = () => {
+const createContainerForFilmsTemplate = () => {
   return (
     `<section class="films">
       <section class="films-list">
@@ -81,57 +75,13 @@ const createCardForAllMoviesTemplate = () => {
   );
 };
 
-const createCardForTopRatedTemplate = () => {
-  return (
-    `<article class="film-card">
-          <h3 class="film-card__title">The Man with the Golden Arm</h3>
-          <p class="film-card__rating">9.0</p>
-          <p class="film-card__info">
-            <span class="film-card__year">1955</span>
-            <span class="film-card__duration">1h 59m</span>
-            <span class="film-card__genre">Drama</span>
-          </p>
-          <img src="./images/posters/the-man-with-the-golden-arm.jpg" alt="" class="film-card__poster">
-          <p class="film-card__description">Frankie Machine (Frank Sinatra) is released from the federal Narcotic Farm in Lexington, Kentucky with a set of drums and a new outlook on…</p>
-          <a class="film-card__comments">18 comments</a>
-          <form class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched  film-card__controls-item--active">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite">Mark as favorite</button>
-          </form>
-        </article>`
-  );
-};
-
-const createCardForMostCommentedTemplate = () => {
-  return (
-    `<article class="film-card">
-          <h3 class="film-card__title">Santa Claus Conquers the Martians</h3>
-          <p class="film-card__rating">2.3</p>
-          <p class="film-card__info">
-            <span class="film-card__year">1964</span>
-            <span class="film-card__duration">1h 21m</span>
-            <span class="film-card__genre">Comedy</span>
-          </p>
-          <img src="./images/posters/santa-claus-conquers-the-martians.jpg" alt="" class="film-card__poster">
-          <p class="film-card__description">The Martians Momar ("Mom Martian") and Kimar ("King Martian") are worried that their children Girmar ("Girl Martian") and Bomar ("Boy Marti…</p>
-          <a class="film-card__comments">465 comments</a>
-          <form class="film-card__controls">
-            <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched">Mark as watched</button>
-            <button class="film-card__controls-item button film-card__controls-item--favorite film-card__controls-item--active">Mark as favorite</button>
-          </form>
-        </article>`
-  );
-};
-
-const createButtonTemplate = () => {
+const createButtonShowMoreTemplate = () => {
   return (
     `<button class="films-list__show-more">Show more</button>`
   );
 };
 
-const createfooterStatistic = () => {
+const createfooterStatisticTemplate = () => {
   return (
     `<section class="footer__statistics">
     <p>130 291 movies inside</p>
@@ -146,30 +96,29 @@ const render = (container, template, place) => {
 const header = document.querySelector(`header`);
 const main = document.querySelector(`main`);
 
-render(header, createUserRank(), `beforeend`);
+render(header, createUserRankTemplate(), `beforeend`);
 render(main, createSiteMenuTemplate(), `beforeend`);
-render(main, createSortTemplate(), `beforeend`);
-render(main, createContainerForFilms(), `beforeend`);
+render(main, createContainerForFilmsTemplate(), `beforeend`);
 
-const filmList = document.querySelector(`.films-list`);
+const filmList = main.querySelector(`.films-list`);
 const containerForAllMovies = filmList.querySelector(`.films-list__container`);
-const filmsListExtra = document.querySelectorAll(`.films-list--extra`);
-const containerForTopRatedMovies = filmsListExtra[0].querySelector(`.films-list__container`);
-const containerForMostCommntedMovies = filmsListExtra[1].querySelector(`.films-list__container`);
+const extrafilms = main.querySelectorAll(`.films-list--extra`);
+const containerForTopRatedMovies = extrafilms[0].querySelector(`.films-list__container`);
+const containerForMostCommntedMovies = extrafilms[1].querySelector(`.films-list__container`);
 
-for (let i = 0; i < CARD_NUMBER; i++) {
+for (let i = 0; i < NUMBER_OF_FILMS; i++) {
   render(containerForAllMovies, createCardForAllMoviesTemplate(), `beforeend`);
 }
 
-for (let j = 0; j < CARD_NUMBER_RATE; j++) {
-  render(containerForTopRatedMovies, createCardForTopRatedTemplate(), `beforeend`);
+for (let j = 0; j < NUMBER_OF_EXTRA_FILMS; j++) {
+  render(containerForTopRatedMovies, createCardForAllMoviesTemplate(), `beforeend`);
 }
 
-for (let k = 0; k < CARD_NUMBER_COMMENT; k++) {
-  render(containerForMostCommntedMovies, createCardForMostCommentedTemplate(), `beforeend`);
+for (let k = 0; k < NUMBER_OF_EXTRA_FILMS; k++) {
+  render(containerForMostCommntedMovies, createCardForAllMoviesTemplate(), `beforeend`);
 }
 
-render(filmList, createButtonTemplate(), `beforeend`);
+render(filmList, createButtonShowMoreTemplate(), `beforeend`);
 
 const footer = document.querySelector(`footer`);
-render(footer, createfooterStatistic(), `beforeend`);
+render(footer, createfooterStatisticTemplate(), `beforeend`);
