@@ -1,9 +1,9 @@
 import {createUserRankTemplate} from "./view/user-rank";
 import {createMenuTemplate} from "./view/menu";
-import {createFilmContainerTemplate} from "./view/film-container";
-import {createCardForAllMoviesTemplate} from "./view/card";
+import {createFilmBoardTemplate} from "./view/film-board";
+import {createFilmCard} from "./view/card";
 import {createShowMoreButtonTemplate} from "./view/show-more-button";
-import {createfooterStatisticTemplate} from "./view/footer-statistic";
+import {createFooterStatisticTemplate} from "./view/footer-statistic";
 
 const NUMBER_OF_FILMS = 5;
 const NUMBER_OF_EXTRA_FILMS = 2;
@@ -17,7 +17,7 @@ const main = document.querySelector(`main`);
 
 render(header, createUserRankTemplate(), `beforeend`);
 render(main, createMenuTemplate(), `beforeend`);
-render(main, createFilmContainerTemplate(), `beforeend`);
+render(main, createFilmBoardTemplate(), `beforeend`);
 
 const filmList = main.querySelector(`.films-list`);
 const containerForAllMovies = filmList.querySelector(`.films-list__container`);
@@ -26,18 +26,18 @@ const containerForTopRatedMovies = extrafilms[0].querySelector(`.films-list__con
 const containerForMostCommntedMovies = extrafilms[1].querySelector(`.films-list__container`);
 
 for (let i = 0; i < NUMBER_OF_FILMS; i++) {
-  render(containerForAllMovies, createCardForAllMoviesTemplate(), `beforeend`);
+  render(containerForAllMovies, createFilmCard(), `beforeend`);
 }
 
 for (let j = 0; j < NUMBER_OF_EXTRA_FILMS; j++) {
-  render(containerForTopRatedMovies, createCardForAllMoviesTemplate(), `beforeend`);
+  render(containerForTopRatedMovies, createFilmCard(), `beforeend`);
 }
 
 for (let k = 0; k < NUMBER_OF_EXTRA_FILMS; k++) {
-  render(containerForMostCommntedMovies, createCardForAllMoviesTemplate(), `beforeend`);
+  render(containerForMostCommntedMovies, createFilmCard(), `beforeend`);
 }
 
 render(filmList, createShowMoreButtonTemplate(), `beforeend`);
 
 const footer = document.querySelector(`footer`);
-render(footer, createfooterStatisticTemplate(), `beforeend`);
+render(footer, createFooterStatisticTemplate(), `beforeend`);
