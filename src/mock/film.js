@@ -16,7 +16,7 @@ const generateFilmTitle = () => {
   return titles[randomIndex];
 };
 
-const generateFilmPoster = () => {
+const generateFilmPosterRef = () => {
   const posters = [
     `./images/posters/made-for-each-other.png`,
     `./images/posters/popeye-meets-sinbad.png`,
@@ -193,7 +193,7 @@ const generateCountries = () => {
 export const generateFilm = () => {
   return {
     title: generateFilmTitle(),
-    poster: generateFilmPoster(),
+    poster: generateFilmPosterRef(),
     description: generateFilmDescription(),
     comments: generateComments(),
     rating: generateRating(),

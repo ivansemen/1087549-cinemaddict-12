@@ -38,7 +38,7 @@ const generateDate = () => {
   return dates[randomIndex];
 };
 
-const generateEmoji = () => {
+const generateEmojiRef = () => {
   const emoji = [
     `./images/emoji/angry.png`,
     `./images/emoji/puke.png`,
@@ -56,7 +56,7 @@ export const generateComments = () => {
     text: generateText(),
     name: generateNames(),
     date: generateDate(),
-    emoji: generateEmoji()
+    emoji: generateEmojiRef()
   };
 };
 
