@@ -8,10 +8,7 @@ import {createFilmDetails} from "./view/film-details";
 import {generateFilm} from "./mock/film";
 import {generateComments} from "./mock/comments";
 import {generateFilter} from "./mock/filter";
-
-const NUMBER_OF_FILMS = 5;
-const NUMBER_OF_EXTRA_FILMS = 2;
-const NUMBER_MOCK = 20;
+import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK} from "./const.js";
 
 const films = new Array(NUMBER_MOCK).fill().map(generateFilm);
 const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
