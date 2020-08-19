@@ -47,19 +47,19 @@ for (let i = 0; i < NUMBER_OF_EXTRA_FILMS; i++) {
 const body = document.querySelector(`body`);
 const cards = body.querySelectorAll(`.film-card`);
 
-const onCardEscPress = (evt) => {
-  if (evt.key === `Escape`) {
-    evt.preventDefault();
-    closeCard();
-  }
-};
-
 const closeCard = () => {
   const filmDetails = document.querySelector(`.film-details`);
   body.removeChild(filmDetails);
   document.removeEventListener(`keydown`, onCardEscPress);
   let closeButton = filmDetails.querySelector(`.film-details__close-btn`);
   closeButton.removeEventListener(`click`, closeCard);
+};
+
+const onCardEscPress = (evt) => {
+  if (evt.key === `Escape`) {
+    evt.preventDefault();
+    closeCard();
+  }
 };
 
 for (let i = 0; i < cards.length; i++) {
