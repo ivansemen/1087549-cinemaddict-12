@@ -1,4 +1,4 @@
-export const createFilmDetails = (film, comment) => {
+export const createFilmDetailsTemplate = (film, comment) => {
   const {title, poster, description, rating, year, time, genre, originalTitle, director, writers, actors, country} = film;
   const {text, name, date, emoji} = comment;
 

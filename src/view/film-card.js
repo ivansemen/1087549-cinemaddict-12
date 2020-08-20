@@ -1,4 +1,4 @@
-export const createFilmCard = (film) => {
+export const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre} = film;
   const playlistClassName = isAddedToPlaylist
     ? `film-card__controls-item--active`
