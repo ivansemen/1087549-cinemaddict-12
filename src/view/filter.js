@@ -1,8 +1,10 @@
+import {doFirstLetterBig} from "../utils";
+
 const createFilterItemTemplate = (filter, isActive) => {
   const {name, count} = filter;
-
+  const nameFirstLetterBig = doFirstLetterBig(name);
   return (
-    `<a href="#${name}" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">${isActive ? `All movies` : `${name}`} <span class="main-navigation__item-count">${count}</span></a>`
+    `<a href="#${name}" class="main-navigation__item ${isActive ? `main-navigation__item--active` : ``}">${isActive ? `All movies` : `${nameFirstLetterBig}`} <span class="main-navigation__item-count">${count}</span></a>`
   );
 };
 
