@@ -204,6 +204,20 @@ const generateAgeLimit = () => {
   return ageLimits[randomIndex];
 };
 
+const generateCommentFilmDetails = () => {
+  const commentsFilmDetails = [
+    `4`,
+    `67`,
+    `89`,
+    `100`,
+    `2`
+  ];
+
+  const randomIndex = getRandomInteger(0, commentsFilmDetails.length - 1);
+
+  return commentsFilmDetails[randomIndex];
+};
+
 export const generateFilm = () => {
   return {
     title: generateFilmTitle(),
@@ -222,6 +236,7 @@ export const generateFilm = () => {
     writer: generateWriters(),
     actors: generateActors(),
     country: generateCountries(),
-    ageLimit: generateAgeLimit()
+    ageLimit: generateAgeLimit(),
+    commentFilmDetails: generateCommentFilmDetails()
   };
 };
