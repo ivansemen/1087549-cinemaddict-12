@@ -1,5 +1,5 @@
 export const createFilmDetailsTemplate = (film, comment) => {
-  const {title, poster, description, rating, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, commentFilmDetails} = film;
+  const {title, poster, description, rating, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, numberOfComments} = film;
   const {text, name, date, emoji} = comment;
 
   return `<section class="film-details">
@@ -81,7 +81,7 @@ export const createFilmDetailsTemplate = (film, comment) => {
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${commentFilmDetails}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${numberOfComments}</span></h3>
 
         <ul class="film-details__comments-list">
           <li class="film-details__comment">

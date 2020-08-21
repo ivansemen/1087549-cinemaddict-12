@@ -204,8 +204,8 @@ const generateAgeLimit = () => {
   return ageLimits[randomIndex];
 };
 
-const generateCommentFilmDetails = () => {
-  const commentsFilmDetails = [
+const generateNumberOfComments = () => {
+  const numberOfComments = [
     `4`,
     `67`,
     `89`,
@@ -213,9 +213,9 @@ const generateCommentFilmDetails = () => {
     `2`
   ];
 
-  const randomIndex = getRandomInteger(0, commentsFilmDetails.length - 1);
+  const randomIndex = getRandomInteger(0, numberOfComments.length - 1);
 
-  return commentsFilmDetails[randomIndex];
+  return numberOfComments[randomIndex];
 };
 
 export const generateFilm = () => {
@@ -237,6 +237,6 @@ export const generateFilm = () => {
     actors: generateActors(),
     country: generateCountries(),
     ageLimit: generateAgeLimit(),
-    commentFilmDetails: generateCommentFilmDetails()
+    numberOfComments: generateNumberOfComments()
   };
 };
