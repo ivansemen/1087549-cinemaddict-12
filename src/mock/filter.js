@@ -8,7 +8,7 @@ const filmToFilterMap = {
     .filter((film) => film.isFavorite).length
 };
 
-export const generateFilter = (films) => {
+export const generateFilterData = (films) => {
   return Object.entries(filmToFilterMap).map(([filterName, countFilms]) => {
     return {
       name: filterName,

@@ -1,12 +1,12 @@
 import {generateFilm} from "./mock/film";
 import {generateComments} from "./mock/comments";
-import {generateFilter} from "./mock/filter";
+import {generateFilterData} from "./mock/filter";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK} from "./const.js";
 import {createUserRankTemplate, createMenuTemplate, createFilterTemplate, createFilmBoardTemplate, createFilmCardTemplate, createShowMoreButtonTemplate, createFooterStatisticTemplate, createFilmDetailsTemplate} from "./view";
 
 const films = new Array(NUMBER_MOCK).fill().map(generateFilm);
 const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
-const filterItems = generateFilter(films);
+const filterItems = generateFilterData(films);
 
 
 const render = (container, template, place) => {

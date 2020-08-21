@@ -190,6 +190,20 @@ const generateCountries = () => {
   return countries[randomIndex];
 };
 
+const generateAgeLimit = () => {
+  const ageLimits = [
+    `18+`,
+    `12+`,
+    `16+`,
+    `6+`,
+    `0+`,
+  ];
+
+  const randomIndex = getRandomInteger(0, ageLimits.length - 1);
+
+  return ageLimits[randomIndex];
+};
+
 export const generateFilm = () => {
   return {
     title: generateFilmTitle(),
@@ -207,6 +221,7 @@ export const generateFilm = () => {
     director: generateDirector(),
     writer: generateWriters(),
     actors: generateActors(),
-    country: generateCountries()
+    country: generateCountries(),
+    ageLimit: generateAgeLimit()
   };
 };
