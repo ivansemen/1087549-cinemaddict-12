@@ -1,4 +1,6 @@
-export const createFilmDetailsTemplate = (film, comment) => {
+import {createElement} from "../utils";
+
+const createFilmDetailsTemplate = (film, comment) => {
   const {title, poster, description, rating, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, numberOfComments} = film;
   const {text, name, date, emoji} = comment;
 
@@ -133,3 +135,27 @@ export const createFilmDetailsTemplate = (film, comment) => {
   </form>
 </section>`;
 };
+
+export default class FilmDetails {
+  constructor(film, comment) {
+    this._film = film;
+    this._comment = comment;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmDetailsTemplate(this._film, this._comment);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
