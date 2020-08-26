@@ -3,7 +3,7 @@ import {generateComments} from "./mock/comments";
 import {generateFilterData} from "./mock/filter";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK} from "./const.js";
 import {UserRank, Menu, Filter, FilmBoard, FilmCard, ShowMoreButton, FooterStatistic, FilmDetails} from "./view";
-import {renderElement} from "./utils";
+import {renderElement} from "./utils/render";
 import {RenderPosition} from "./const";
 
 const films = new Array(NUMBER_MOCK).fill().map(generateFilm);

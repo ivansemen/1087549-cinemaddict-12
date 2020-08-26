@@ -1,4 +1,5 @@
-import {RenderPosition} from "./const";
+import {RenderPosition} from "../const";
+
 export const renderElement = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
@@ -19,15 +20,4 @@ export const createElement = (template) => {
   newElement.innerHTML = template;
 
   return newElement.firstChild;
-};
-
-export const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-export const doFirstLetterBig = (str) => {
-  return str[0].toUpperCase() + str.slice(1);
 };

@@ -1,4 +1,4 @@
-import {doFirstLetterBig} from "../utils";
+import {doFirstLetterBig} from "../utils/common";
 import AbstractView from "./abstract";
 
 const createFilterItemTemplate = (filter, isActive) => {
