@@ -2,8 +2,9 @@ import {generateFilm} from "./mock/film";
 import {generateComments} from "./mock/comments";
 import {generateFilterData} from "./mock/filter";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK} from "./const.js";
-import {UserRankView, MenuView, FilterView, FilmBoardView, FilmCardView, ShowMoreButtonView, FooterStatisticView, FilmDetailsView} from "./view";
-import {renderElement, RenderPosition} from "./utils";
+import {UserRank, Menu, Filter, FilmBoard, FilmCard, ShowMoreButton, FooterStatistic, FilmDetails} from "./view";
+import {renderElement} from "./utils";
+import {RenderPosition} from "./const";
 
 const films = new Array(NUMBER_MOCK).fill().map(generateFilm);
 const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
@@ -12,12 +13,12 @@ const filterItems = generateFilterData(films);
 const header = document.querySelector(`header`);
 const main = document.querySelector(`main`);
 
-renderElement(header, new UserRankView().getElement(), RenderPosition.BEFOREEND);
-renderElement(main, new MenuView().getElement(), RenderPosition.BEFOREEND);
-renderElement(main, new FilmBoardView().getElement(), RenderPosition.BEFOREEND);
+renderElement(header, new UserRank().getElement(), RenderPosition.BEFOREEND);
+renderElement(main, new Menu().getElement(), RenderPosition.BEFOREEND);
+renderElement(main, new FilmBoard().getElement(), RenderPosition.BEFOREEND);
 
 const navigation = main.querySelector(`.main-navigation`);
-renderElement(navigation, new FilterView(filterItems).getElement(), RenderPosition.AFTERBEGIN);
+renderElement(navigation, new Filter(filterItems).getElement(), RenderPosition.AFTERBEGIN);
 
 const filmList = main.querySelector(`.films-list`);
 const containerForAllMovies = filmList.querySelector(`.films-list__container`);
@@ -28,8 +29,8 @@ const footer = document.querySelector(`footer`);
 const body = document.querySelector(`body`);
 
 const renderFilmCard = (filmListElement, film, comment) => {
-  const filmCardComponent = new FilmCardView(film);
-  const filmDetailsComponent = new FilmDetailsView(film, comment);
+  const filmCardComponent = new FilmCard(film);
+  const filmDetailsComponent = new FilmDetails(film, comment);
 
   const openFilmDetails = () => {
     body.appendChild(filmDetailsComponent.getElement());
@@ -84,7 +85,7 @@ for (let i = 0; i < NUMBER_OF_EXTRA_FILMS; i++) {
 let renderedFilmCount = NUMBER_OF_FILMS;
 
 if (films.length > NUMBER_OF_FILMS) {
-  renderElement(filmList, new ShowMoreButtonView().getElement(), RenderPosition.BEFOREEND);
+  renderElement(filmList, new ShowMoreButton().getElement(), RenderPosition.BEFOREEND);
 
   const showMoreButton = document.querySelector(`.films-list__show-more`);
 
@@ -102,4 +103,4 @@ if (films.length > NUMBER_OF_FILMS) {
   });
 }
 
-renderElement(footer, new FooterStatisticView().getElement(), RenderPosition.BEFOREEND);
+renderElement(footer, new FooterStatistic().getElement(), RenderPosition.BEFOREEND);
