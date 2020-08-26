@@ -2,17 +2,17 @@ import AbstractView from "./abstract";
 
 const createFilmCardTemplate = (film) => {
   const {title, poster, description, comments, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre} = film;
-  const playlistClassName = isAddedToPlaylist
-    ? `film-card__controls-item--active`
-    : ``;
+  const playlistClassName = isAddedToPlaylist ?
+    `film-card__controls-item--active` :
+    ``;
 
-  const watchedClassName = isWatched
-    ? `film-card__controls-item--active`
-    : ``;
+  const watchedClassName = isWatched ?
+    `film-card__controls-item--active` :
+    ``;
 
-  const favoriteClassName = isFavorite
-    ? `film-card__controls-item--active`
-    : ``;
+  const favoriteClassName = isFavorite ?
+    `film-card__controls-item--active` :
+    ``;
 
   return `<article class="film-card">
           <h3 class="film-card__title">${title}</h3>
@@ -37,9 +37,22 @@ export default class FilmCard extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmCardTemplate(this._film);
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._editClickHandler);
+    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._editClickHandler);
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, this._editClickHandler);
   }
 }

@@ -48,22 +48,12 @@ const renderFilmCard = (filmListElement, film, comment) => {
     }
   };
 
-  filmCardComponent.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, () => {
+  filmCardComponent.setEditClickHandler(() => {
     openFilmDetails();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  filmCardComponent.getElement().querySelector(`.film-card__title`).addEventListener(`click`, () => {
-    openFilmDetails();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  filmCardComponent.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, () => {
-    openFilmDetails();
-    document.addEventListener(`keydown`, onEscKeyDown);
-  });
-
-  filmDetailsComponent.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, () => {
+  filmDetailsComponent.setEditClickHandler(() => {
     closeFilmDetails();
   });
 
@@ -85,12 +75,11 @@ for (let i = 0; i < NUMBER_OF_EXTRA_FILMS; i++) {
 let renderedFilmCount = NUMBER_OF_FILMS;
 
 if (films.length > NUMBER_OF_FILMS) {
-  renderElement(filmList, new ShowMoreButton().getElement(), RenderPosition.BEFOREEND);
+  const showMoreButton = new ShowMoreButton();
 
-  const showMoreButton = document.querySelector(`.films-list__show-more`);
+  renderElement(filmList, showMoreButton.getElement(), RenderPosition.BEFOREEND);
 
-  showMoreButton.addEventListener(`click`, (evt) => {
-    evt.preventDefault();
+  showMoreButton.setClickHandler(() => {
     films
       .slice(renderedFilmCount, renderedFilmCount + NUMBER_OF_FILMS)
       .forEach((film, comment) => renderFilmCard(containerForAllMovies, film, comment));
@@ -98,7 +87,8 @@ if (films.length > NUMBER_OF_FILMS) {
     renderedFilmCount += NUMBER_OF_FILMS;
 
     if (renderedFilmCount >= films.length) {
-      showMoreButton.remove();
+      showMoreButton.getElement().remove();
+      showMoreButton.removeElement();
     }
   });
 }
