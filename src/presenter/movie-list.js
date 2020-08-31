@@ -1,4 +1,4 @@
-import {FilmBoard, FilmCard, ShowMoreButton, FilmDetails, MainFilmList, TopRatedFilmList, MostCommentedFilmList} from "../view";
+import {FilmBoardView, FilmCardView, ShowMoreButtonView, FilmDetailsView, MainFilmListView, TopRatedFilmListView, MostCommentedFilmListView} from "../view";
 import {renderElement} from "../utils/render";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK, RenderPosition} from "../const";
 import {generateComments} from "../mock/comments";
@@ -10,10 +10,10 @@ export default class MovieList {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
 
-    this._boardComponent = new FilmBoard();
-    this._mainFilmListComponent = new MainFilmList();
-    this._topRatedFilmListComponent = new TopRatedFilmList();
-    this._mostCommentedFilmListComponent = new MostCommentedFilmList();
+    this._boardComponent = new FilmBoardView();
+    this._mainFilmListComponent = new MainFilmListView();
+    this._topRatedFilmListComponent = new TopRatedFilmListView();
+    this._mostCommentedFilmListComponent = new MostCommentedFilmListView();
     this.mainFilmListContainer = this._mainFilmListComponent.getElement().querySelector(`.films-list__container`);
     this.topRatedFilmListContainer = this._topRatedFilmListComponent.getElement().querySelector(`.films-list__container`);
     this.mostCommentedFilmListContainer = this._mostCommentedFilmListComponent.getElement().querySelector(`.films-list__container`);
@@ -31,8 +31,8 @@ export default class MovieList {
   }
 
   _renderFilm(filmListElement, film, comment) {
-    const filmCardComponent = new FilmCard(film);
-    const filmDetailsComponent = new FilmDetails(film, comment);
+    const filmCardComponent = new FilmCardView(film);
+    const filmDetailsComponent = new FilmDetailsView(film, comment);
 
     const openFilmDetails = () => {
       body.appendChild(filmDetailsComponent.getElement());
@@ -74,12 +74,16 @@ export default class MovieList {
     for (let i = 0; i < Math.min(this._boardFilms.length, NUMBER_OF_EXTRA_FILMS); i++) {
       this._renderFilm(this.mostCommentedFilmListContainer, this._boardFilms[i], comments[i]);
     }
+
+    if (this._boardFilms.length > NUMBER_OF_FILMS) {
+      this._renderShowMoreButton();
+    }
   }
 
   _renderShowMoreButton() {
     let renderedFilmCount = NUMBER_OF_FILMS;
 
-    const showMoreButton = new ShowMoreButton();
+    const showMoreButton = new ShowMoreButtonView();
 
     renderElement(this._mainFilmListComponent, showMoreButton, RenderPosition.BEFOREEND);
 
@@ -97,15 +101,7 @@ export default class MovieList {
     });
   }
 
-  _renderFilmList() {
-    this._renderFilms();
-
-    if (this._boardFilms.length > NUMBER_OF_FILMS) {
-      this._renderShowMoreButton();
-    }
-  }
-
   _renderBoard() {
-    this._renderFilmList();
+    this._renderFilms();
   }
 }

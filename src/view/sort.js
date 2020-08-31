@@ -8,7 +8,7 @@ const createSortTemplate = () => {
   </ul>`;
 };
 
-export default class Sort extends AbstractView {
+export default class SortView extends AbstractView {
   getTemplate() {
     return createSortTemplate();
   }

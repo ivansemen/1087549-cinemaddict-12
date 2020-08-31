@@ -33,7 +33,7 @@ const createFilmCardTemplate = (film) => {
         </article>`;
 };
 
-export default class FilmCard extends AbstractView {
+export default class FilmCardView extends AbstractView {
   constructor(film) {
     super();
     this._film = film;
@@ -44,15 +44,14 @@ export default class FilmCard extends AbstractView {
     return createFilmCardTemplate(this._film);
   }
 
-  _editClickHandler(evt) {
-    evt.preventDefault();
+  _editClickHandler() {
     this._callback.editClick();
   }
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
-    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, this._editClickHandler);
-    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, this._editClickHandler);
-    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, this._editClickHandler);
+    this.getElement().querySelector(`.film-card__poster`).addEventListener(`click`, callback);
+    this.getElement().querySelector(`.film-card__title`).addEventListener(`click`, callback);
+    this.getElement().querySelector(`.film-card__comments`).addEventListener(`click`, callback);
   }
 }

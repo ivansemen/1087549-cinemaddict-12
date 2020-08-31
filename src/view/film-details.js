@@ -136,7 +136,7 @@ const createFilmDetailsTemplate = (film, comment) => {
 </section>`;
 };
 
-export default class FilmDetails extends AbstractView {
+export default class FilmDetailsView extends AbstractView {
   constructor(film, comment) {
     super();
     this._film = film;
