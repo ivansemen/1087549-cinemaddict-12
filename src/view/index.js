@@ -8,6 +8,3 @@ export {default as FooterStatisticView} from "./footer-statistic";
 export {default as FilmDetailsView} from "./film-details";
 export {default as SortView} from "./sort";
 export {default as MainFilmListView} from "./main-film-list";
-export {default as TopRatedFilmListView} from "./top-rated-film-list";
-export {default as MostCommentedFilmListView} from "./most-commented-film-list";
-
