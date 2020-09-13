@@ -21,6 +21,7 @@ renderElement(navigation, new FilterView(filterItems).getElement(), RenderPositi
 
 const footer = document.querySelector(`footer`);
 const boardPresenter = new MovieList(main);
+
 boardPresenter.init(films);
 
 renderElement(footer, new FooterStatisticView().getElement(), RenderPosition.BEFOREEND);
