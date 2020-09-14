@@ -1,4 +1,4 @@
-import {FilmBoardView, FilmCardView, ShowMoreButtonView, FilmDetailsView, MainFilmListView} from "../view";
+import {FilmBoardView, FilmCardView, ShowMoreButtonView, FilmDetailsView, MainFilmListView, NoFilmView} from "../view";
 import {renderElement} from "../utils/render";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK, RenderPosition, EXTRA, HIDDEN_TITLE, MAIN_TITLE, TOP_RATED_TITLE, MOST_COMMENTED_TITLE} from "../const";
 import {generateComments} from "../mock/comments";
@@ -14,6 +14,7 @@ export default class MovieList {
     this._mainFilmList = new MainFilmListView(``, HIDDEN_TITLE, MAIN_TITLE);
     this._topRatedFilmList = new MainFilmListView(EXTRA, ``, TOP_RATED_TITLE);
     this._mostCommentedFilmList = new MainFilmListView(EXTRA, ``, MOST_COMMENTED_TITLE);
+    this._noFilm = new NoFilmView();
     this.mainFilmListContainer = this._mainFilmList.getElement().querySelector(`.films-list__container`);
     this.topRatedFilmListContainer = this._topRatedFilmList.getElement().querySelector(`.films-list__container`);
     this.mostCommentedFilmListContainer = this._mostCommentedFilmList.getElement().querySelector(`.films-list__container`);
@@ -21,13 +22,15 @@ export default class MovieList {
 
   init(boardFilms) {
     this._boardFilms = boardFilms.slice();
-
     renderElement(this._boardContainer, this._board, RenderPosition.BEFOREEND);
-    renderElement(this._board, this._mainFilmList, RenderPosition.BEFOREEND);
-    renderElement(this._board, this._topRatedFilmList, RenderPosition.BEFOREEND);
-    renderElement(this._board, this._mostCommentedFilmList, RenderPosition.BEFOREEND);
-
-    this._renderBoard();
+    if (boardFilms.length > 0) {
+      renderElement(this._board, this._mainFilmList, RenderPosition.BEFOREEND);
+      renderElement(this._board, this._topRatedFilmList, RenderPosition.BEFOREEND);
+      renderElement(this._board, this._mostCommentedFilmList, RenderPosition.BEFOREEND);
+      this._renderBoard();
+    } else {
+      renderElement(this._board, this._noFilm, RenderPosition.BEFOREEND);
+    }
   }
 
   _renderFilm(filmListElement, film, comment) {
