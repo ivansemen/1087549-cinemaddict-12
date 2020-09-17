@@ -1,5 +1,5 @@
 import {FilmCardView, FilmDetailsView} from "../view";
-import {renderElement} from "../utils/render";
+import {renderElement, remove, replace} from "../utils/render";
 import {RenderPosition} from "../const";
 
 const body = document.querySelector(`body`);
@@ -19,13 +19,30 @@ export default class Movie {
   init(film, comment) {
     this._film = film;
 
+    const prevFilmCard = this._filmCard;
+    const prevFilmDeatails = this._filmDetails;
+
     this._filmCard = new FilmCardView(film);
     this._filmDetails = new FilmDetailsView(film, comment);
 
     this._filmCard.setEditClickHandler(this._handleOpenClick);
     this._filmDetails.setEditClickHandler(this._handleCloseClick);
 
-    renderElement(this._filmListContainer, this._filmCard, RenderPosition.BEFOREEND);
+    if (prevFilmCard === null || prevFilmDeatails === null) {
+      renderElement(this._filmListContainer, this._filmCard, RenderPosition.BEFOREEND);
+      return;
+    }
+
+    if (this._filmListContainer.contains(prevFilmCard.getElement())) {
+      replace(this._filmCard, prevFilmCard);
+    }
+
+    if (this._filmListContainer.conatins(prevFilmDeatails.getElement())) {
+      replace(this._filmDetails, prevFilmDeatails);
+    }
+
+    remove(prevFilmCard);
+    remove(prevFilmDeatails);
   }
 
   _openFilmDetails() {
@@ -51,5 +68,10 @@ export default class Movie {
 
   _handleCloseClick() {
     this._closeFilmDetails();
+  }
+
+  destroy() {
+    remove(this._filmCard);
+    remove(this._filmDetails);
   }
 }
