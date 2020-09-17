@@ -1,11 +1,11 @@
-import {FilmBoardView, FilmCardView, ShowMoreButtonView, FilmDetailsView, MainFilmListView, SortView, NoFilmView} from "../view";
+import {FilmBoardView, ShowMoreButtonView, MainFilmListView, SortView, NoFilmView} from "../view";
 import {renderElement} from "../utils/render";
 import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK, RenderPosition, EXTRA, HIDDEN_TITLE, MAIN_TITLE, TOP_RATED_TITLE, MOST_COMMENTED_TITLE} from "../const";
 import {generateComments} from "../mock/comments";
 import {SortType} from "../const";
 import {sortFilmDate, sortFilmRating} from "../utils/film";
+import FilmPresenter from "../presenter/movie";
 
-const body = document.querySelector(`body`);
 const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
 
 export default class MovieList {
@@ -44,35 +44,8 @@ export default class MovieList {
   }
 
   _renderFilm(filmListElement, film, comment) {
-    const filmCard = new FilmCardView(film);
-    const filmDetails = new FilmDetailsView(film, comment);
-
-    const openFilmDetails = () => {
-      body.appendChild(filmDetails.getElement());
-    };
-
-    const closeFilmDetails = () => {
-      body.removeChild(filmDetails.getElement());
-    };
-
-    const onEscKeyDown = (evt) => {
-      if (evt.key === `Escape` || evt.key === `Esc`) {
-        evt.preventDefault();
-        closeFilmDetails();
-        document.removeEventListener(`keydown`, onEscKeyDown);
-      }
-    };
-
-    filmCard.setEditClickHandler(() => {
-      openFilmDetails();
-      document.addEventListener(`keydown`, onEscKeyDown);
-    });
-
-    filmDetails.setEditClickHandler(() => {
-      closeFilmDetails();
-    });
-
-    renderElement(filmListElement, filmCard, RenderPosition.BEFOREEND);
+    const filmPresenter = new FilmPresenter(filmListElement);
+    filmPresenter.init(film, comment);
   }
 
   _renderFilms(filmListElement, count) {
