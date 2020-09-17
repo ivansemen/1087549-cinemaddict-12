@@ -6,7 +6,14 @@ export const HIDDEN_TITLE = `visually-hidden`;
 export const MAIN_TITLE = `All movies. Upcoming`;
 export const TOP_RATED_TITLE = `Top rated`;
 export const MOST_COMMENTED_TITLE = `Most commented`;
+
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
+};
+
+export const SortType = {
+  DEFAULT: `default`,
+  DATE: `date`,
+  RATING: `rating`
 };
