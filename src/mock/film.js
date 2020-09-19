@@ -1,5 +1,7 @@
 import {getRandomInteger} from "../utils/common";
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 const generateFilmTitle = () => {
   const titles = [
     `The Dance of Life`,
@@ -220,6 +222,7 @@ const generateNumberOfComments = () => {
 
 export const generateFilm = () => {
   return {
+    id: generateId(),
     title: generateFilmTitle(),
     poster: generateFilmPosterRef(),
     description: generateFilmDescription(),
