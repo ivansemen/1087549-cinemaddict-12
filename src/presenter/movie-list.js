@@ -1,13 +1,13 @@
 import {FilmBoardView, ShowMoreButtonView, MainFilmListView, SortView, NoFilmView} from "../view";
 import {renderElement} from "../utils/render";
-import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, NUMBER_MOCK, RenderPosition, EXTRA, HIDDEN_TITLE, MAIN_TITLE, TOP_RATED_TITLE, MOST_COMMENTED_TITLE} from "../const";
-import {generateComments} from "../mock/comments";
+import {NUMBER_OF_FILMS, NUMBER_OF_EXTRA_FILMS, RenderPosition, EXTRA, HIDDEN_TITLE, MAIN_TITLE, TOP_RATED_TITLE, MOST_COMMENTED_TITLE} from "../const";
+// import {generateComments} from "../mock/comments";
 import {SortType} from "../const";
 import {sortFilmDate, sortFilmRating} from "../utils/film";
 import FilmPresenter from "../presenter/movie";
 import {updateItem} from "../utils/common";
 
-const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
+// const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
 export default class MovieList {
   constructor(boardContainer) {
     this._boardContainer = boardContainer;
@@ -46,47 +46,6 @@ export default class MovieList {
     }
   }
 
-  _renderFilm(filmListElement, film, comment) {
-    const filmPresenter = new FilmPresenter(filmListElement);
-    filmPresenter.init(film, comment);
-    this._filmPresenter[film.id] = filmPresenter;
-  }
-
-  _renderFilms(from, to, filmListElement) {
-    this._boardFilms
-      .slice(from, to)
-      .forEach((boardFilm, comment) => this._renderFilm(filmListElement, boardFilm, comments[comment]));
-  }
-
-  _clearFilmList() {
-    Object
-      .values(this._filmPresenter)
-      .forEach((presenter) => presenter.destroy());
-    this._filmPresenter = {};
-    this._renderedFilmCount = NUMBER_OF_FILMS;
-  }
-
-  _renderShowMoreButton() {
-    let renderedFilmCount = NUMBER_OF_FILMS;
-
-    const showMoreButton = new ShowMoreButtonView();
-
-    renderElement(this._mainFilmList, showMoreButton, RenderPosition.BEFOREEND);
-
-    showMoreButton.setClickHandler(() => {
-      this._boardFilms
-        .slice(renderedFilmCount, renderedFilmCount + NUMBER_OF_FILMS)
-        .forEach((film, comment) => this._renderFilm(this.mainFilmListContainer, film, comment));
-
-      renderedFilmCount += NUMBER_OF_FILMS;
-
-      if (renderedFilmCount >= this._boardFilms.length) {
-        showMoreButton.getElement().remove();
-        showMoreButton.removeElement();
-      }
-    });
-  }
-
   _handleFilmChange(updatedFilm) {
     this._boardFilms = updateItem(this._boardFilms, updatedFilm);
     this._sourcedBoardFilms = updateItem(this._sourcedBoardFilms, updatedFilm);
@@ -114,7 +73,8 @@ export default class MovieList {
     }
     this._sortFilms(sortType);
     this._clearFilmList();
-    this._renderFilms(this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_FILMS, this.mainFilmListContainer);
+    this._renderFilms(this.mainFilmListContainer, 0, Math.min(this._boardFilms.length, NUMBER_OF_FILMS));
+    this._renderFilms(this.mostCommentedFilmListContainer, this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS);
   }
 
   _renderSort() {
@@ -122,10 +82,54 @@ export default class MovieList {
     this._sort.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
+  _renderFilm(filmListElement, film) {
+    const filmPresenter = new FilmPresenter(filmListElement, this._handleFilmChange);
+    filmPresenter.init(film);
+    this._filmPresenter[film.id] = filmPresenter;
+  }
+
+  _renderFilms(filmListElement, from, to) {
+    // for (let i = 0; i < Math.min(this._boardFilms.length, count); i++) {
+    //   this._renderFilm(filmListElement, this._boardFilms[i]);
+    // }
+    this._boardFilms
+      .slice(from, to)
+      .forEach((boardFilm) => this._renderFilm(filmListElement, boardFilm));
+  }
+
+  _renderShowMoreButton() {
+    let renderedFilmCount = NUMBER_OF_FILMS;
+
+    const showMoreButton = new ShowMoreButtonView();
+
+    renderElement(this._mainFilmList, showMoreButton, RenderPosition.BEFOREEND);
+
+    showMoreButton.setClickHandler(() => {
+      this._boardFilms
+        .slice(renderedFilmCount, renderedFilmCount + NUMBER_OF_FILMS)
+        .forEach((film) => this._renderFilm(this.mainFilmListContainer, film));
+
+      renderedFilmCount += NUMBER_OF_FILMS;
+
+      if (renderedFilmCount >= this._boardFilms.length) {
+        showMoreButton.getElement().remove();
+        showMoreButton.removeElement();
+      }
+    });
+  }
+
+  _clearFilmList() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._filmPresenter = {};
+    this._renderedFilmCount = NUMBER_OF_FILMS;
+  }
+
   _renderBoard() {
-    this._renderFilms(this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_FILMS, this.mainFilmListContainer);
-    this._renderFilms(this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS, this.topRatedFilmListContainer);
-    this._renderFilms(this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS, this.mostCommentedFilmListContainer);
+    this._renderFilms(this.mainFilmListContainer, 0, Math.min(this._boardFilms.length, NUMBER_OF_FILMS));
+    this._renderFilms(this.topRatedFilmListContainer, this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS);
+    this._renderFilms(this.mostCommentedFilmListContainer, this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS);
     this._renderSort();
   }
 }

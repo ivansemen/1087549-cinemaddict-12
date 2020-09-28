@@ -1,4 +1,5 @@
 import {getRandomInteger} from "../utils/common";
+import {EMOJIS} from "../const";
 
 const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
@@ -220,6 +221,12 @@ const generateNumberOfComments = () => {
   return numberOfComments[randomIndex];
 };
 
+const getRandomEmoji = () => {
+  const randomIndex = getRandomInteger(0, EMOJIS.length - 1);
+
+  return EMOJIS[randomIndex];
+};
+
 export const generateFilm = () => {
   return {
     id: generateId(),
@@ -240,6 +247,7 @@ export const generateFilm = () => {
     actors: generateActors(),
     country: generateCountries(),
     ageLimit: generateAgeLimit(),
-    numberOfComments: generateNumberOfComments()
+    numberOfComments: generateNumberOfComments(),
+    emoji: getRandomEmoji()
   };
 };

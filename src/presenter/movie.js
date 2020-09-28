@@ -5,8 +5,9 @@ import {RenderPosition} from "../const";
 const body = document.querySelector(`body`);
 
 export default class Movie {
-  constructor(filmListContainer) {
+  constructor(filmListContainer, changeData) {
     this._filmListContainer = filmListContainer;
+    this._changeData = changeData;
 
     this._filmCard = null;
     this._filmDetails = null;
@@ -14,19 +15,28 @@ export default class Movie {
     this._handleOpenClick = this._handleOpenClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
     this._onEscKeyDown = this._onEscKeyDown.bind(this);
+    this._handleAddingToPlaylistClick = this._handleAddingToPlaylistClick.bind(this);
+    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
   }
 
-  init(film, comment) {
+  init(film) {
     this._film = film;
 
     const prevFilmCard = this._filmCard;
     const prevFilmDeatails = this._filmDetails;
 
     this._filmCard = new FilmCardView(film);
-    this._filmDetails = new FilmDetailsView(film, comment);
+    this._filmDetails = new FilmDetailsView(film);
 
     this._filmCard.setEditClickHandler(this._handleOpenClick);
     this._filmDetails.setEditClickHandler(this._handleCloseClick);
+    this._filmCard.setAddingToPlaylistHandler(this._handleAddingToPlaylistClick);
+    this._filmDetails.setEditClickHandler(this._handleAddingToPlaylistClick);
+    this._filmCard.setWatchedHandler(this._handleWatchedClick);
+    this._filmDetails.setEditClickHandler(this._handleWatchedClick);
+    this._filmCard.setFavoriteHandler(this._handleFavoriteClick);
+    this._filmDetails.setEditClickHandler(this._handleFavoriteClick);
 
     if (prevFilmCard === null || prevFilmDeatails === null) {
       renderElement(this._filmListContainer, this._filmCard, RenderPosition.BEFOREEND);
@@ -37,12 +47,17 @@ export default class Movie {
       replace(this._filmCard, prevFilmCard);
     }
 
-    if (this._filmListContainer.conatins(prevFilmDeatails.getElement())) {
+    if (body.contains(prevFilmDeatails.getElement())) {
       replace(this._filmDetails, prevFilmDeatails);
     }
 
     remove(prevFilmCard);
     remove(prevFilmDeatails);
+  }
+
+  destroy() {
+    remove(this._filmCard);
+    remove(this._filmDetails);
   }
 
   _openFilmDetails() {
@@ -61,17 +76,44 @@ export default class Movie {
     }
   }
 
-  _handleOpenClick() {
+  _handleOpenClick(film) {
     this._openFilmDetails();
     document.addEventListener(`keydown`, this._onEscKeyDown);
+    this._changeData(film);
   }
 
-  _handleCloseClick() {
+  _handleCloseClick(film) {
     this._closeFilmDetails();
+    this._changeData(film);
   }
 
-  destroy() {
-    remove(this._filmCard);
-    remove(this._filmDetails);
+  _handleAddingToPlaylistClick() {
+    this._changeData(
+        Object.assign({},
+            this._film, {
+              isAddedToPlaylist: !this._film.isAddedToPlaylist
+            }
+        )
+    );
+  }
+
+  _handleWatchedClick() {
+    this._changeData(
+        Object.assign({},
+            this._film, {
+              isWatched: !this._film.isWatched
+            }
+        )
+    );
+  }
+
+  _handleFavoriteClick() {
+    this._changeData(
+        Object.assign({},
+            this._film, {
+              isFavorite: !this._film.isFavorite
+            }
+        )
+    );
   }
 }

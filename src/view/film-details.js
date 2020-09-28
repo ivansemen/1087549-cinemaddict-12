@@ -1,8 +1,27 @@
-import AbstractView from "./abstract";
+import Smart from "./smart";
+import {EMOJIS} from "../const";
 
-const createFilmDetailsTemplate = (film, comment) => {
-  const {title, poster, description, rating, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, numberOfComments} = film;
-  const {text, name, date, emoji} = comment;
+const createEmojiTemplate = (currentEmoji) => {
+  return EMOJIS.map((emoji) => currentEmoji === emoji ? `<img src="images/emoji/${emoji}.png" alt="emoji-${emoji}" width="55" height="55">` : ``).join(``);
+};
+
+const createFilmDetailsTemplate = (data) => {
+  const {title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji} = data;
+  // const {text, name, date, emoji} = comment;
+
+  const addingToPlaylist = isAddedToPlaylist ?
+    `checked` :
+    ``;
+
+  const watched = isWatched ?
+    `checked` :
+    ``;
+
+  const favorite = isFavorite ?
+    `checked` :
+    ``;
+
+  const emojiTemplate = createEmojiTemplate(emoji);
 
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -70,31 +89,31 @@ const createFilmDetailsTemplate = (film, comment) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
-        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist ">Add to watchlist</label>
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist" ${addingToPlaylist}>
+        <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched" ${watched}>
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite" ${favorite}>
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
 
     <div class="form-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">${numberOfComments}</span></h3>
+        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
 
         <ul class="film-details__comments-list">
           <li class="film-details__comment">
             <span class="film-details__comment-emoji">
-              <img src="${emoji}" width="55" height="55" alt="emoji-smile">
+              <img src="./images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
             </span>
             <div>
-              <p class="film-details__comment-text">${text}</p>
+              <p class="film-details__comment-text">Interesting setting and a good cast</p>
               <p class="film-details__comment-info">
-                <span class="film-details__comment-author">${name}</span>
-                <span class="film-details__comment-day">${date}</span>
+                <span class="film-details__comment-author">Tim Macoveev</span>
+                <span class="film-details__comment-day">2019/12/31 23:59</span>
                 <button class="film-details__comment-delete">Delete</button>
               </p>
             </div>
@@ -102,7 +121,9 @@ const createFilmDetailsTemplate = (film, comment) => {
         </ul>
 
         <div class="film-details__new-comment">
-          <div for="add-emoji" class="film-details__add-emoji-label"></div>
+          <div for="add-emoji" class="film-details__add-emoji-label">
+            ${emojiTemplate}
+          </div>
 
           <label class="film-details__comment-label">
             <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment"></textarea>
@@ -136,25 +157,108 @@ const createFilmDetailsTemplate = (film, comment) => {
 </section>`;
 };
 
-export default class FilmDetailsView extends AbstractView {
-  constructor(film, comment) {
+export default class FilmDetailsView extends Smart {
+  constructor(film) {
     super();
     this._film = film;
-    this._comment = comment;
+    // this._comment = comment;
     this._editClickHandler = this._editClickHandler.bind(this);
+    this._handleAddingToPlaylistClick = this._handleAddingToPlaylistClick.bind(this);
+    this._handleWatchedClick = this._handleWatchedClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
+    this._data = FilmDetailsView.parseFilmToData(film);
+
+    this._setInnerHandlers();
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._film, this._comment);
+    return createFilmDetailsTemplate(this._data);
+  }
+
+  updateData(update) {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign({},
+        this._data,
+        update
+    );
+
+    this.updateElement();
   }
 
   _editClickHandler(evt) {
     evt.preventDefault();
-    this._callback.editClick();
+    this._callback.editClick(FilmDetailsView.parseDataToFilm(this._data));
+  }
+
+  _handleAddingToPlaylistClick(evt) {
+    evt.preventDefault();
+    // this._callback.addingToPlaylistClick();
+    this.updateData({
+      isAddedToPlaylist: !this._data.isAddedToPlaylist
+    });
+  }
+
+  _handleWatchedClick(evt) {
+    evt.preventDefault();
+    // this._callback.watchedClick();
+    this.updateData({
+      isWatched: !this._data.isWatched
+    });
+  }
+
+  _emojiChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData({
+      emoji: evt.target.value
+    });
+  }
+
+  _handleFavoriteClick(evt) {
+    evt.preventDefault();
+    // this._callback.favoriteClick();
+    this.updateData({
+      isFavorite: !this._data.isFavorite
+    });
   }
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector(`.film-details__close-btn`).addEventListener(`click`, this._editClickHandler);
+  }
+
+  static parseFilmToData(film) {
+    return Object.assign({},
+        film, {
+          isAddedToPlaylist: film.isAddedToPlaylist !== null,
+          isWatched: film.isWatched !== null,
+          isFavorite: film.isFavorite !== null
+        }
+    );
+  }
+
+  static parseDataToFilm(data) {
+    data = Object.assign({}, data);
+
+    if (!data.isAddedToPlaylist) {
+      data.isAddedToPlaylist = null;
+    }
+
+    if (!data.isWatched) {
+      data.isWatched = null;
+    }
+
+    if (!data.isFavorite) {
+      data.isFavorite = null;
+    }
+
+    delete data.isAddedToPlaylist;
+    delete data.isWatched;
+    delete data.isFavorite;
+
+    return data;
   }
 }
