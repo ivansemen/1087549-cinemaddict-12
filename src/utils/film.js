@@ -33,5 +33,5 @@ export const sortFilmRating = (filmA, filmB) => {
     return weight;
   }
 
-  return filmA.rating - filmB.rating;
+  return filmB.rating - filmA.rating;
 };
