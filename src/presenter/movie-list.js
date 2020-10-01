@@ -27,6 +27,7 @@ export default class MovieList {
     this.mostCommentedFilmListContainer = this._mostCommentedFilmList.getElement().querySelector(`.films-list__container`);
     this._handleFilmChange = this._handleFilmChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
   }
 
   init(boardFilms) {
@@ -77,13 +78,19 @@ export default class MovieList {
     this._renderFilms(this.mostCommentedFilmListContainer, this._renderedFilmCount, this._renderedFilmCount + NUMBER_OF_EXTRA_FILMS);
   }
 
+  _handleModeChange() {
+    Object
+      .values(this._filmPresenter)
+      .forEach((presenter) => presenter.resetView());
+  }
+
   _renderSort() {
     renderElement(this._board, this._sort, RenderPosition.AFTERBEGIN);
     this._sort.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderFilm(filmListElement, film) {
-    const filmPresenter = new FilmPresenter(filmListElement, this._handleFilmChange);
+    const filmPresenter = new FilmPresenter(filmListElement, this._handleFilmChange, this._handleModeChange);
     filmPresenter.init(film);
     this._filmPresenter[film.id] = filmPresenter;
   }

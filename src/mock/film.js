@@ -1,5 +1,6 @@
 import {getRandomInteger} from "../utils/common";
 import {EMOJIS} from "../const";
+import moment from "moment-locales-webpack-plugin";
 
 const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
@@ -81,32 +82,12 @@ const generateRating = () => {
   return ratings[randomIndex];
 };
 
-const generateYear = () => {
-  const years = [
-    `1929`,
-    `1933`,
-    `1955`,
-    `1964`,
-    `1936`,
-  ];
-
-  const randomIndex = getRandomInteger(0, years.length - 1);
-
-  return years[randomIndex];
+const generateYear = (date) => {
+  moment(date).format(`YYYY`);
 };
 
-const generateTime = () => {
-  const times = [
-    `1h 55m`,
-    `54m`,
-    `1h 59m`,
-    `1h 21m`,
-    `16m`,
-  ];
-
-  const randomIndex = getRandomInteger(0, times.length - 1);
-
-  return times[randomIndex];
+const generateTime = (time) => {
+  moment(time).format(`h:m`);
 };
 
 const generateGenre = () => {

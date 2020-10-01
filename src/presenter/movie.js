@@ -4,13 +4,20 @@ import {RenderPosition} from "../const";
 
 const body = document.querySelector(`body`);
 
+const Mode = {
+  DEFAULT: `DEFAULT`,
+  OPENED: `OPENED`
+};
+
 export default class Movie {
-  constructor(filmListContainer, changeData) {
+  constructor(filmListContainer, changeData, changeMode) {
     this._filmListContainer = filmListContainer;
     this._changeData = changeData;
+    this._changeMode = changeMode;
 
     this._filmCard = null;
     this._filmDetails = null;
+    this._mode = Mode.DEFAULT;
 
     this._handleOpenClick = this._handleOpenClick.bind(this);
     this._handleCloseClick = this._handleCloseClick.bind(this);
@@ -43,11 +50,11 @@ export default class Movie {
       return;
     }
 
-    if (this._filmListContainer.contains(prevFilmCard.getElement())) {
+    if (this._mode === Mode.DEFAULT) {
       replace(this._filmCard, prevFilmCard);
     }
 
-    if (body.contains(prevFilmDeatails.getElement())) {
+    if (this._mode === Mode.OPENED) {
       replace(this._filmDetails, prevFilmDeatails);
     }
 
@@ -60,13 +67,21 @@ export default class Movie {
     remove(this._filmDetails);
   }
 
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._handleCloseClick();
+    }
+  }
+
   _openFilmDetails() {
     body.appendChild(this._filmDetails.getElement());
+    this._changeMode();
+    this._mode = Mode.OPENED;
   }
 
   _closeFilmDetails() {
     body.removeChild(this._filmDetails.getElement());
-    document.removeEventListener(`keydown`, this._onEscKeyDown);
+    this._mode = Mode.DEFAULT;
   }
 
   _onEscKeyDown(evt) {
@@ -84,6 +99,7 @@ export default class Movie {
 
   _handleCloseClick(film) {
     this._closeFilmDetails();
+    document.removeEventListener(`keydown`, this._onEscKeyDown);
     this._changeData(film);
   }
 
