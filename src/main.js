@@ -1,26 +1,34 @@
 import {generateFilm} from "./mock/film";
-import {generateFilterData} from "./mock/filter";
 import {NUMBER_MOCK} from "./const";
-import {UserRankView, MenuView, FilterView, FooterStatisticView} from "./view";
+import {UserRankView, MenuView, FooterStatisticView} from "./view";
 import {renderElement} from "./utils/render";
 import {RenderPosition} from "./const";
 import MovieList from "./presenter/movie-list";
+import FilterModel from "./model/filter.js";
+import FilmsModel from "./model/movies.js";
+import FilterPresenter from "./presenter/filter.js";
 
 const films = new Array(NUMBER_MOCK).fill().map(generateFilm);
-const filterItems = generateFilterData(films);
 
 const header = document.querySelector(`header`);
 const main = document.querySelector(`main`);
+const footer = document.querySelector(`footer`);
 
 renderElement(header, new UserRankView().getElement(), RenderPosition.BEFOREEND);
-renderElement(main, new MenuView().getElement(), RenderPosition.BEFOREEND);
 
-const navigation = main.querySelector(`.main-navigation`);
-renderElement(navigation, new FilterView(filterItems).getElement(), RenderPosition.AFTERBEGIN);
+const filmsModel = new FilmsModel();
+const filterModel = new FilterModel();
 
-const footer = document.querySelector(`footer`);
-const boardPresenter = new MovieList(main);
+filmsModel.setFilms(films);
 
-boardPresenter.init(films);
+const boardPresenter = new MovieList(main, filmsModel, filterModel);
+
+boardPresenter.init();
+
+renderElement(main, new MenuView().getElement(), RenderPosition.AFTERBEGIN);
+const navigation = document.querySelector(`.main-navigation`);
+const filterPresenter = new FilterPresenter(navigation, filterModel, filmsModel);
+filterPresenter.init();
+
 
 renderElement(footer, new FooterStatisticView().getElement(), RenderPosition.BEFOREEND);

@@ -1,6 +1,6 @@
 import {FilmCardView, FilmDetailsView} from "../view";
 import {renderElement, remove, replace} from "../utils/render";
-import {RenderPosition} from "../const";
+import {RenderPosition, UserAction, UpdateType} from "../const";
 
 const body = document.querySelector(`body`);
 
@@ -89,6 +89,8 @@ export default class Movie {
 
   _handleAddingToPlaylistClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign({},
             this._film, {
               isAddedToPlaylist: !this._film.isAddedToPlaylist
@@ -99,6 +101,8 @@ export default class Movie {
 
   _handleWatchedClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign({},
             this._film, {
               isWatched: !this._film.isWatched
@@ -109,6 +113,8 @@ export default class Movie {
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_FILM,
+        UpdateType.MINOR,
         Object.assign({},
             this._film, {
               isFavorite: !this._film.isFavorite
