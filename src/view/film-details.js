@@ -1,12 +1,12 @@
 import Smart from "./smart";
-import { EMOJIS } from "../const";
+import {EMOJIS} from "../const";
 
 const createEmojiTemplate = (currentEmoji) => {
   return EMOJIS.map((emoji) => currentEmoji === emoji ? `<img src="images/emoji/${emoji}.png" alt="emoji-${emoji}" width="55" height="55">` : ``).join(``);
 };
 
 const createFilmDetailsTemplate = (data) => {
-  const { title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji } = data;
+  const {title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji} = data;
   // const {text, name, date, emoji} = comment;
 
   const addingToPlaylist = isAddedToPlaylist ?
@@ -235,11 +235,11 @@ export default class FilmDetailsView extends Smart {
 
   static parseFilmToData(film) {
     return Object.assign({},
-      film, {
-        isAddedToPlaylist: film.isAddedToPlaylist,
-        isWatched: film.isWatched,
-        isFavorite: film.isFavorite
-      }
+        film, {
+          isAddedToPlaylist: film.isAddedToPlaylist,
+          isWatched: film.isWatched,
+          isFavorite: film.isFavorite
+        }
     );
   }
 

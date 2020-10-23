@@ -19,7 +19,7 @@ export default class MovieList {
     this._filmPresenter = {};
 
     this._sortComponent = null;
-    this._showMoreButtonComponent = null
+    this._showMoreButtonComponent = null;
 
     this._board = new FilmBoardView();
     this._mainFilmList = new MainFilmListView(``, HIDDEN_TITLE, MAIN_TITLE);

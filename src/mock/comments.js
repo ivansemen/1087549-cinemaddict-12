@@ -40,10 +40,10 @@ const generateDate = () => {
 
 const generateEmojiRef = () => {
   const emoji = [
-    `angry`,
-    `puke`,
-    `sleeping`,
-    `smile`,
+    `./images/emoji/angry.png`,
+    `./images/emoji/puke.png`,
+    `./images/emoji/sleeping.png`,
+    `./images/emoji/smile.png`,
   ];
 
   const randomIndex = getRandomInteger(0, emoji.length - 1);
@@ -56,7 +56,7 @@ export const generateComments = () => {
     text: generateText(),
     name: generateNames(),
     date: generateDate(),
-    emojiInput: generateEmojiRef()
+    emoji: generateEmojiRef()
   };
 };
 
