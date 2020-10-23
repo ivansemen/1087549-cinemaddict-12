@@ -1,12 +1,12 @@
 import Smart from "./smart";
-import {EMOJIS} from "../const";
+import { EMOJIS } from "../const";
 
 const createEmojiTemplate = (currentEmoji) => {
   return EMOJIS.map((emoji) => currentEmoji === emoji ? `<img src="images/emoji/${emoji}.png" alt="emoji-${emoji}" width="55" height="55">` : ``).join(``);
 };
 
 const createFilmDetailsTemplate = (data) => {
-  const {title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji} = data;
+  const { title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji } = data;
   // const {text, name, date, emoji} = comment;
 
   const addingToPlaylist = isAddedToPlaylist ?
@@ -160,14 +160,13 @@ const createFilmDetailsTemplate = (data) => {
 export default class FilmDetailsView extends Smart {
   constructor(film) {
     super();
-    this._film = film;
+    this._data = FilmDetailsView.parseFilmToData(film);
     // this._comment = comment;
     this._editClickHandler = this._editClickHandler.bind(this);
     this._handleAddingToPlaylistClick = this._handleAddingToPlaylistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
-    this._data = FilmDetailsView.parseFilmToData(film);
 
     this._setInnerHandlers();
   }
@@ -176,17 +175,24 @@ export default class FilmDetailsView extends Smart {
     return createFilmDetailsTemplate(this._data);
   }
 
-  updateData(update) {
-    if (!update) {
-      return;
-    }
+  restoreHandlers() {
+    this._setInnerHandlers();
+    // this.setEditClickHandler(this._callback.editClick);
+  }
 
-    this._data = Object.assign({},
-        this._data,
-        update
-    );
-
-    this.updateElement();
+  _setInnerHandlers() {
+    this.getElement()
+      .querySelector(`.film-details__control-label--watchlist`)
+      .addEventListener(`click`, this._handleAddingToPlaylistClick);
+    this.getElement()
+      .querySelector(`.film-details__control-label--watched`)
+      .addEventListener(`click`, this._handleWatchedClick);
+    this.getElement()
+      .querySelector(`.film-details__control-label--favorite`)
+      .addEventListener(`click`, this._handleFavoriteClick);
+    this.getElement()
+      .querySelector(`.film-details__emoji-list`)
+      .addEventListener(`change`, this._emojiChangeHandler);
   }
 
   _editClickHandler(evt) {
@@ -196,17 +202,15 @@ export default class FilmDetailsView extends Smart {
 
   _handleAddingToPlaylistClick(evt) {
     evt.preventDefault();
-    // this._callback.addingToPlaylistClick();
     this.updateData({
-      isAddedToPlaylist: !this._data.isAddedToPlaylist
+      isAddedToPlaylist: this._data.isAddedToPlaylist
     });
   }
 
   _handleWatchedClick(evt) {
     evt.preventDefault();
-    // this._callback.watchedClick();
     this.updateData({
-      isWatched: !this._data.isWatched
+      isWatched: this._data.isWatched
     });
   }
 
@@ -219,9 +223,8 @@ export default class FilmDetailsView extends Smart {
 
   _handleFavoriteClick(evt) {
     evt.preventDefault();
-    // this._callback.favoriteClick();
     this.updateData({
-      isFavorite: !this._data.isFavorite
+      isFavorite: this._data.isFavorite
     });
   }
 
@@ -232,28 +235,16 @@ export default class FilmDetailsView extends Smart {
 
   static parseFilmToData(film) {
     return Object.assign({},
-        film, {
-          isAddedToPlaylist: film.isAddedToPlaylist !== null,
-          isWatched: film.isWatched !== null,
-          isFavorite: film.isFavorite !== null
-        }
+      film, {
+        isAddedToPlaylist: film.isAddedToPlaylist,
+        isWatched: film.isWatched,
+        isFavorite: film.isFavorite
+      }
     );
   }
 
   static parseDataToFilm(data) {
     data = Object.assign({}, data);
-
-    if (!data.isAddedToPlaylist) {
-      data.isAddedToPlaylist = null;
-    }
-
-    if (!data.isWatched) {
-      data.isWatched = null;
-    }
-
-    if (!data.isFavorite) {
-      data.isFavorite = null;
-    }
 
     delete data.isAddedToPlaylist;
     delete data.isWatched;

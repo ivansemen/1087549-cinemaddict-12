@@ -1,8 +1,11 @@
 import {FilmCardView, FilmDetailsView} from "../view";
 import {renderElement, remove, replace} from "../utils/render";
 import {RenderPosition, UserAction, UpdateType} from "../const";
+import {generateComments} from "../mock/comments";
+// import {NUMBER_MOCK} from "../const";
 
 const body = document.querySelector(`body`);
+// const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
 
 export default class Movie {
   constructor(filmListContainer, changeData) {

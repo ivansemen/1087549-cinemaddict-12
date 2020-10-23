@@ -1,14 +1,13 @@
 import {FilmBoardView, ShowMoreButtonView, MainFilmListView, SortView, NoFilmView} from "../view";
 import {renderElement} from "../utils/render";
 import {NUMBER_OF_FILMS, RenderPosition, HIDDEN_TITLE, MAIN_TITLE} from "../const";
-// import {generateComments} from "../mock/comments";
 import {SortType, UpdateType, UserAction} from "../const";
 import {sortFilmDate, sortFilmRating} from "../utils/film";
 import {remove} from "../utils/render";
 import FilmPresenter from "../presenter/movie";
 import {filter} from "../utils/filter";
 
-// const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
+
 export default class MovieList {
   constructor(boardContainer, filmsModel, filterModel) {
     this._filmsModel = filmsModel;
@@ -20,7 +19,7 @@ export default class MovieList {
     this._filmPresenter = {};
 
     this._sortComponent = null;
-    this._showMoreButtonComponent = null;
+    this._showMoreButtonComponent = null
 
     this._board = new FilmBoardView();
     this._mainFilmList = new MainFilmListView(``, HIDDEN_TITLE, MAIN_TITLE);
@@ -37,10 +36,9 @@ export default class MovieList {
 
   init() {
     renderElement(this._boardContainer, this._board, RenderPosition.BEFOREEND);
-    this._renderSort();
-    // renderElement(this._boardContainer, new MenuView().getElement(), RenderPosition.AFTERBEGIN);
     renderElement(this._board, this._mainFilmList, RenderPosition.BEFOREEND);
     this._renderBoard();
+    this._renderSort();
   }
 
   _getFilms() {
@@ -141,6 +139,7 @@ export default class MovieList {
       .forEach((presenter) => presenter.destroy());
     this._filmPresenter = {};
 
+    // remove(this._sortComponent);
     remove(this._noFilm);
     remove(this._showMoreButtonComponent);
 

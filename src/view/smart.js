@@ -5,24 +5,21 @@ export default class Smart extends AbstractView {
     super();
   }
 
-  restoreHandlers() {
-    this._setInnerHandlers();
-    this.setEditClickHandler(this._callback.editClick);
-  }
+  updateData(update, justDataUpdating) {
+    if (!update) {
+      return;
+    }
 
-  _setInnerHandlers() {
-    this.getElement()
-      .querySelector(`.film-details__control-label--watchlist`)
-      .addEventListener(`click`, this._handleAddingToPlaylistClick);
-    this.getElement()
-      .querySelector(`.film-details__control-label--watched`)
-      .addEventListener(`click`, this._handleWatchedClick);
-    this.getElement()
-      .querySelector(`.film-details__control-label--favorite`)
-      .addEventListener(`click`, this._handleFavoriteClick);
-    this.getElement()
-      .querySelector(`.film-details__emoji-list`)
-      .addEventListener(`change`, this._emojiChangeHandler);
+    this._data = Object.assign({},
+      this._data,
+      update
+    );
+
+    if (justDataUpdating) {
+      return;
+    }
+
+    this.updateElement();
   }
 
   updateElement() {
@@ -36,5 +33,10 @@ export default class Smart extends AbstractView {
     prevElement = null; // Чтобы окончательно "убить" ссылку на prevElement
 
     this.restoreHandlers();
+  }
+
+
+  restoreHandlers() {
+    throw new Error(`Abstract method not implemented: resetHandlers`);
   }
 }
