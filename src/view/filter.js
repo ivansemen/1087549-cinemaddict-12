@@ -1,9 +1,7 @@
-// import {doFirstLetterBig} from "../utils/common";
 import AbstractView from "./abstract";
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
-  // const nameFirstLetterBig = doFirstLetterBig(name);
   return (
     `<a href="#${name}" class="main-navigation__item ${type === currentFilterType ? `main-navigation__item--active` : ``}" data-filter-type="${type}">${name}${name !== `All movies` ? `<span class="main-navigation__item-count">${count}</span></a>` : ``}`
   );

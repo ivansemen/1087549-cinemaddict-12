@@ -5,9 +5,9 @@ const createEmojiTemplate = (currentEmoji) => {
   return EMOJIS.map((emoji) => currentEmoji === emoji ? `<img src="images/emoji/${emoji}.png" alt="emoji-${emoji}" width="55" height="55">` : ``).join(``);
 };
 
-const createFilmDetailsTemplate = (data) => {
+const createFilmDetailsTemplate = (data, comments) => {
   const {title, poster, description, rating, isAddedToPlaylist, isWatched, isFavorite, year, time, genre, originalTitle, director, writers, actors, country, ageLimit, emoji} = data;
-  // const {text, name, date, emoji} = comment;
+  const {text, name, date, smile} = comments;
 
   const addingToPlaylist = isAddedToPlaylist ?
     `checked` :
@@ -22,6 +22,26 @@ const createFilmDetailsTemplate = (data) => {
     ``;
 
   const emojiTemplate = createEmojiTemplate(emoji);
+
+  const createCommentsContainer = () => {
+    const comment = `<li class="film-details__comment">
+            <span class="film-details__comment-emoji">
+              <img src="./images/emoji/${smile}.png" width="55" height="55" alt="emoji-${smile}">
+            </span>
+            <div>
+              <p class="film-details__comment-text">${text}</p>
+              <p class="film-details__comment-info">
+                <span class="film-details__comment-author">${name}</span>
+                <span class="film-details__comment-day">${date}</span>
+                <button class="film-details__comment-delete">Delete</button>
+              </p>
+            </div>
+          </li>`;
+
+    return `<ul class="film-details__comments-list">
+          ${comment}
+        </ul>`;
+  };
 
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -104,21 +124,7 @@ const createFilmDetailsTemplate = (data) => {
       <section class="film-details__comments-wrap">
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
 
-        <ul class="film-details__comments-list">
-          <li class="film-details__comment">
-            <span class="film-details__comment-emoji">
-              <img src="./images/emoji/smile.png" width="55" height="55" alt="emoji-smile">
-            </span>
-            <div>
-              <p class="film-details__comment-text">Interesting setting and a good cast</p>
-              <p class="film-details__comment-info">
-                <span class="film-details__comment-author">Tim Macoveev</span>
-                <span class="film-details__comment-day">2019/12/31 23:59</span>
-                <button class="film-details__comment-delete">Delete</button>
-              </p>
-            </div>
-          </li>
-        </ul>
+        ${createCommentsContainer()}
 
         <div class="film-details__new-comment">
           <div for="add-emoji" class="film-details__add-emoji-label">
@@ -158,10 +164,10 @@ const createFilmDetailsTemplate = (data) => {
 };
 
 export default class FilmDetailsView extends Smart {
-  constructor(film) {
+  constructor(film, comments) {
     super();
     this._data = FilmDetailsView.parseFilmToData(film);
-    // this._comment = comment;
+    this._comments = comments;
     this._editClickHandler = this._editClickHandler.bind(this);
     this._handleAddingToPlaylistClick = this._handleAddingToPlaylistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
@@ -172,7 +178,7 @@ export default class FilmDetailsView extends Smart {
   }
 
   getTemplate() {
-    return createFilmDetailsTemplate(this._data);
+    return createFilmDetailsTemplate(this._data, this._comments);
   }
 
   restoreHandlers() {

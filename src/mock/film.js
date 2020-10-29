@@ -1,7 +1,7 @@
 import {getRandomInteger} from "../utils/common";
 import {EMOJIS} from "../const";
 
-const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+export const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
 
 const generateFilmTitle = () => {
   const titles = [

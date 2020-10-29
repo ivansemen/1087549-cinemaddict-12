@@ -1,17 +1,17 @@
 import {FilmCardView, FilmDetailsView} from "../view";
 import {renderElement, remove, replace} from "../utils/render";
 import {RenderPosition, UserAction, UpdateType} from "../const";
-// import {generateComments} from "../mock/comments";
-// import {NUMBER_MOCK} from "../const";
+import CommentNewPresenter from "./comment-new";
+import {generateComments} from "../mock/comments";
+import {NUMBER_MOCK} from "../const";
 
 const body = document.querySelector(`body`);
-// const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
 
 export default class Movie {
   constructor(filmListContainer, changeData) {
     this._filmListContainer = filmListContainer;
     this._changeData = changeData;
-
+    this._comments = new Array(NUMBER_MOCK).fill().map(generateComments);
     this._filmCard = null;
     this._filmDetails = null;
 
@@ -21,6 +21,9 @@ export default class Movie {
     this._handleAddingToPlaylistClick = this._handleAddingToPlaylistClick.bind(this);
     this._handleWatchedClick = this._handleWatchedClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleViewAction = this._handleViewAction.bind(this);
+
+    this._commentNewPresenter = new CommentNewPresenter(this._commentContainer, this._handleViewAction);
   }
 
   init(film) {
@@ -29,8 +32,8 @@ export default class Movie {
     const prevFilmCard = this._filmCard;
     const prevFilmDeatails = this._filmDetails;
 
-    this._filmCard = new FilmCardView(film);
-    this._filmDetails = new FilmDetailsView(film);
+    this._filmCard = new FilmCardView(this._film);
+    this._filmDetails = new FilmDetailsView(this._film, this._comments[0]);
 
     this._filmCard.setEditClickHandler(this._handleOpenClick);
     this._filmDetails.setEditClickHandler(this._handleCloseClick);
@@ -58,6 +61,10 @@ export default class Movie {
     remove(prevFilmDeatails);
   }
 
+  createComment() {
+    this._commentNewPresenter.init();
+  }
+
   destroy() {
     remove(this._filmCard);
     remove(this._filmDetails);
@@ -65,6 +72,7 @@ export default class Movie {
 
   _openFilmDetails() {
     body.appendChild(this._filmDetails.getElement());
+    this._commentContainer = this._filmDetails.getElement().querySelector(`.film-details__comments-list`);
   }
 
   _closeFilmDetails() {

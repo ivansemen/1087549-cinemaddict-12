@@ -1,12 +1,14 @@
 import {FilmBoardView, ShowMoreButtonView, MainFilmListView, SortView, NoFilmView} from "../view";
 import {renderElement} from "../utils/render";
 import {NUMBER_OF_FILMS, RenderPosition, HIDDEN_TITLE, MAIN_TITLE} from "../const";
-import {SortType, UpdateType, UserAction} from "../const";
+import {NUMBER_MOCK, SortType, UpdateType, UserAction} from "../const";
 import {sortFilmDate, sortFilmRating} from "../utils/film";
 import {remove} from "../utils/render";
 import FilmPresenter from "../presenter/movie";
 import {filter} from "../utils/filter";
+import {generateComments} from "../mock/comments";
 
+const comments = new Array(NUMBER_MOCK).fill().map(generateComments);
 
 export default class MovieList {
   constructor(boardContainer, filmsModel, filterModel) {
@@ -66,7 +68,7 @@ export default class MovieList {
   _handleModelEvent(updateType, data) {
     switch (updateType) {
       case UpdateType.PATCH:
-        this._filmPresenter[data.id].init(data);
+        this._filmPresenter[data.id].init(data, comments);
         break;
       case UpdateType.MINOR:
         this._clearBoard();
